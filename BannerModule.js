@@ -51,14 +51,14 @@ window.initBannerModule = function() {
             gap: 12px; cursor: pointer; transition: all 0.2s ease !important; 
             background: transparent !important; overflow: hidden; position: relative; min-height: 280px; 
         }
-        .itd-dropzone:hover { border-color: #fff !important; background: rgba(255,255,255,0.05) !important; }
+        .itd-dropzone:hover { border-color: #606060 !important; background: rgba(255,255,255,0.05) !important; }
         .itd-dropzone svg { color: #ffffff66 !important; stroke: currentColor !important; transition: color 0.2s ease; }
         .itd-dropzone:hover svg { color: #747474 !important; }
 
         .itd-dropzone img#itd-cropper-target { display: block !important; max-width: 100% !important; max-height: 280px !important; }
         .itd-overlay { z-index: 2; text-align: center; pointer-events: none; }
         .itd-text-main { font-size: 16px; font-weight: 500; color: #fff; }
-        .itd-text-sub { font-size: 12px; color: #ffffff66; }
+        .itd-text-sub { font-size: 24px; color: #ffffff66; }
         
         .itd-hidden { display: none !important; }
         @keyframes itd-spin { to { transform: rotate(360deg); } }
