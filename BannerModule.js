@@ -58,7 +58,7 @@ window.initBannerModule = function() {
         .itd-dropzone img#itd-cropper-target { display: block !important; max-width: 100% !important; max-height: 280px !important; }
         .itd-overlay { z-index: 2; text-align: center; pointer-events: none; }
         .itd-text-main { font-size: 16px; font-weight: 500; color: #fff; }
-        .itd-text-sub { font-size: 24px; color: #ffffff66; }
+        .itd-text-sub { font-size: 12px; color: #ffffff66; }
         
         .itd-hidden { display: none !important; }
         @keyframes itd-spin { to { transform: rotate(360deg); } }
