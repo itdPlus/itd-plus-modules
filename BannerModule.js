@@ -51,7 +51,7 @@ window.initBannerModule = function() {
             gap: 12px; cursor: pointer; transition: all 0.2s ease !important; 
             background: transparent !important; overflow: hidden; position: relative; min-height: 280px; 
         }
-        .itd-dropzone:hover { border-color: #606060 !important; background: rgba(255,255,255,0.05) !important; }
+        .itd-dropzone:hover { border-color: #fff !important; background: rgba(255,255,255,0.05) !important; }
         .itd-dropzone svg { color: #ffffff66 !important; stroke: currentColor !important; transition: color 0.2s ease; }
         .itd-dropzone:hover svg { color: #747474 !important; }
 
