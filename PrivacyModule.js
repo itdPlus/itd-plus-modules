@@ -100,7 +100,7 @@ window.initPrivacyModule = function() {
         btn.style.cssText = 'appearance: none; -webkit-appearance: none; opacity: 1; position: relative;';
         
         const circle = document.createElement('div');
-        circle.style.cssText = 'width: 24px; height: 24px; background: #fff; border-radius: 50%; transition: transform 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.2); pointer-events: none;';
+        circle.style.cssText = 'width: 24px; height: 24px; background: var(--color-card); border-radius: 50%; transition: transform 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.2); pointer-events: none;';
         btn.appendChild(circle);
 
         updatePrivacyUI(btn, isPrivateStatus);
