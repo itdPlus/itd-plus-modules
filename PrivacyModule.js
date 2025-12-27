@@ -51,26 +51,52 @@ window.initPrivacyModule = function() {
 
         const row = document.createElement('div');
         row.id = 'itd-private-profile-row';
-        row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:12px 0;margin:0;box-sizing:border-box;border-bottom:1px solid rgba(0,0,0,0.05);width:100%;background:transparent;';
+        // Используем переменные сайта для бордера и фона
+        row.style.cssText = `
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--color-border-light, rgba(0,0,0,0.05));
+            width: 100%;
+            background: transparent;
+        `;
 
         const textPart = document.createElement('div');
         textPart.style.cssText = 'display:flex;flex-direction:column;gap:.25rem;pointer-events:none;';
+        
+        // Цвет заголовка: var(--color-text), описание: var(--color-text-secondary)
         textPart.innerHTML = `
-            <div style="font-size:14px;font-weight:500;color:#0f1419;line-height:20px;font-family:inherit;">Приватный профиль</div>
-            <div style="font-size:12px;color:#9ca3af;line-height:1.4;font-family:inherit;">Скрывает ваш профиль от пользователей (Бета тестирование)</div>
+            <div style="font-size:14px;font-weight:500;color:var(--color-text, #0f1419);line-height:20px;font-family:inherit;">Приватный профиль</div>
+            <div style="font-size:12px;color:var(--color-text-secondary, #9ca3af);line-height:1.4;font-family:inherit;">Скрывает ваш профиль от пользователей (Бета тестирование)</div>
         `;
 
         const btn = document.createElement('button');
         btn.id = 'itd-private-btn';
-        btn.style.cssText = 'cursor:pointer;border:none;outline:none;width:48px;height:28px;border-radius:14px;padding:2px;transition:background-color 0.2s ease;flex-shrink:0;position:relative;background-color:#eff3f4;margin:0;';
+        // Фон выключенной кнопки берем из системного цвета инпутов/второстепенного фона
+        btn.style.cssText = `
+            cursor: pointer;
+            border: none;
+            outline: none;
+            width: 48px;
+            height: 28px;
+            border-radius: 14px;
+            padding: 2px;
+            transition: background-color 0.2s ease;
+            flex-shrink: 0;
+            position: relative;
+            background-color: var(--color-item-bg, #eff3f4);
+            margin: 0;
+        `;
         
         const circle = document.createElement('div');
-        circle.style.cssText = 'width:24px;height:24px;background:#fff;border-radius:50%;transition:transform 0.2s ease;transform:translateX(0);box-shadow:0 1px 3px rgba(0,0,0,0.1);';
+        circle.style.cssText = 'width:24px;height:24px;background:#fff;border-radius:50%;transition:transform 0.2s ease;transform:translateX(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);';
         
         btn.appendChild(circle);
 
         const updateUI = (state) => {
-            btn.style.backgroundColor = state ? '#1d9bf0' : '#eff3f4';
+            // При включении используем основной акцентный цвет сайта
+            btn.style.backgroundColor = state ? 'var(--color-primary, #1d9bf0)' : 'var(--color-item-bg, #eff3f4)';
             circle.style.transform = state ? 'translateX(20px)' : 'translateX(0)';
         };
 
@@ -88,17 +114,19 @@ window.initPrivacyModule = function() {
         (async () => {
             const token = await getAuthToken();
             if (token) {
-                const res = await fetch('https://xn--d1ah4a.com/api/users/me/privacy', { headers: { 'Authorization': token } });
-                const data = await res.json();
-                isPrivateStatus = data.isPrivate;
-                updateUI(isPrivateStatus);
+                try {
+                    const res = await fetch('https://xn--d1ah4a.com/api/users/me/privacy', { headers: { 'Authorization': token } });
+                    const data = await res.json();
+                    isPrivateStatus = !!data.isPrivate;
+                    updateUI(isPrivateStatus);
+                } catch (e) { console.error('ITD Privacy Error:', e); }
             }
         })();
     };
 
     const observer = new MutationObserver(() => {
-        const hasOriginal = Array.from(document.querySelectorAll('.settings-modal__toggle-item'))
-                                .some(el => el.textContent.includes('Закрыть стену'));
+        const items = document.querySelectorAll('.settings-modal__toggle-item');
+        const hasOriginal = Array.from(items).some(el => el.textContent.includes('Закрыть стену'));
         if (hasOriginal) injectPrivacySlider();
     });
     observer.observe(document.body, { childList: true, subtree: true });
