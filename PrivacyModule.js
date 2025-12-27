@@ -71,29 +71,33 @@ window.initPrivacyModule = function() {
         btn.id = 'itd-private-btn';
         btn.className = 'settings-modal__toggle svelte-1jqzo7p';
         btn.setAttribute('type', 'button');
+        btn.style.opacity = '1';
+        btn.style.transition = 'background-color 0.2s, transform 0.2s';
         
         const circle = document.createElement('div');
         circle.style.cssText = `
             width: 24px; height: 24px; background: #fff; border-radius: 50%; 
             transition: transform 0.2s ease; transform: translateX(0);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2); pointer-events: none;
         `;
         btn.appendChild(circle);
 
         const updateUI = (state) => {
             if (state) {
-                btn.classList.add('active');
                 btn.style.backgroundColor = 'var(--color-primary)';
+                btn.style.boxShadow = 'none';
                 circle.style.transform = 'translateX(20px)';
+                btn.classList.add('active'); // для совместимости, если нужно сайту
             } else {
-                btn.classList.remove('active');
                 btn.style.backgroundColor = 'var(--color-border)';
                 circle.style.transform = 'translateX(0)';
+                btn.classList.remove('active');
             }
         };
 
         btn.onclick = async (e) => {
             e.preventDefault();
+            e.stopPropagation();
             isPrivateStatus = !isPrivateStatus;
             updateUI(isPrivateStatus);
             await updatePrivacyAPI(isPrivateStatus);
