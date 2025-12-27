@@ -54,19 +54,56 @@
         s.id = 'itd-blacklist-css';
         s.innerHTML = `
             .itd-wrap { position: relative; display: inline-flex; vertical-align: middle; }
+            
+            /* Обновленное меню с поддержкой тем */
             .itd-m {
-                position: absolute; right: 0; top: 42px; background: #fff; border-radius: 18px;
-                border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-                padding: 5px 0; min-width: 190px; z-index: 10000; display: none; flex-direction: column;
+                position: absolute; 
+                right: 0; 
+                top: 42px; 
+                background: var(--color-card, #fff); 
+                border-radius: 16px;
+                border: 1px solid var(--color-border, rgba(0,0,0,0.1)); 
+                box-shadow: 0 4px 24px var(--color-shadow, rgba(0,0,0,0.15));
+                padding: 4px 0; 
+                min-width: 180px; 
+                z-index: 10000; 
+                display: none; 
+                flex-direction: column;
+                overflow: hidden;
             }
+            
             .itd-m.active { display: flex; }
+            
             .itd-i {
-                display: flex; align-items: center; gap: 12px; padding: 12px 18px;
-                border: none; background: none; width: 100%; cursor: pointer;
-                font-family: inherit; font-size: 14px; color: #111; text-align: left;
+                display: flex; 
+                align-items: center; 
+                gap: 10px; 
+                padding: 10px 16px;
+                border: none; 
+                background: transparent; 
+                width: 100%; 
+                cursor: pointer;
+                font-family: inherit; 
+                font-size: 14px; 
+                color: var(--color-text, #111); 
+                text-align: left;
+                transition: background 0.2s;
             }
-            .itd-i:hover { background: #f5f5f5; }
-            .itd-i.red { color: #ff4d4d; }
+            
+            /* Эффект наведения как на сайте */
+            .itd-i:hover { 
+                background: var(--color-border-light, rgba(0,0,0,0.05)); 
+            }
+            
+            /* Цвет для кнопки блокировки (опасное действие) */
+            .itd-i.red { 
+                color: #ff4d4f; 
+            }
+            
+            .itd-i svg {
+                flex-shrink: 0;
+                opacity: 0.8;
+            }
         `;
         document.head.appendChild(s);
     };
@@ -74,7 +111,8 @@
     const setupMenu = (btn) => {
         if (btn.dataset.itd) return;
         btn.dataset.itd = "1";
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg>`;
+        // Заменяем иконку на три точки, чтобы было как в оригинале
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="5" r="2"></circle><circle cx="12" cy="12" r="2"></circle><circle cx="12" cy="19" r="2"></circle></svg>`;
 
         const wrap = document.createElement('div');
         wrap.className = 'itd-wrap';
@@ -89,11 +127,11 @@
             const blocked = getBlacklist().includes(lastViewedUserId);
             menu.innerHTML = `
                 <button class="itd-i" id="itd-r">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
                     Пожаловаться
                 </button>
                 <button class="itd-i red" id="itd-b">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
                     ${blocked ? 'Разблокировать' : 'Заблокировать'}
                 </button>
             `;
@@ -128,7 +166,10 @@
                 menu.classList.toggle('active');
             }
         }, true);
-        document.addEventListener('click', () => menu.classList.remove('active'));
+        
+        document.addEventListener('click', (e) => {
+            if (!wrap.contains(e.target)) menu.classList.remove('active');
+        });
     };
 
     window.initBlacklistModule = function() {
@@ -141,6 +182,8 @@
             const list = getBlacklist();
             if (list.length > 0) {
                 document.querySelectorAll('.post-container').forEach(p => {
+                    // Используем более точную проверку наличия ID в атрибутах, если это возможно,
+                    // но оставляем твой метод для совместимости
                     if (list.some(id => p.innerHTML.includes(id))) p.remove();
                 });
             }
