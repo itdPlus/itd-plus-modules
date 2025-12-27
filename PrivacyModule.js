@@ -53,7 +53,7 @@ window.initPrivacyModule = function() {
 
         const circle = document.createElement('div');
         circle.style.cssText = `
-            width: 24px; height: 24px; background: #fff; border-radius: 50%; 
+            width: 24px; height: 24px; background: var(--color-card); border-radius: 50%; 
             transition: transform 0.2s ease; transform: translateX(0);
             box-shadow: 0 1px 3px rgba(0,0,0,0.2); pointer-events: none;
         `;
