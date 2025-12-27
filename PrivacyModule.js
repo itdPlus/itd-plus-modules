@@ -51,53 +51,45 @@ window.initPrivacyModule = function() {
 
         const row = document.createElement('div');
         row.id = 'itd-private-profile-row';
-        // Используем переменные сайта для бордера и фона
-        row.style.cssText = `
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--color-border-light, rgba(0,0,0,0.05));
-            width: 100%;
-            background: transparent;
-        `;
+        row.className = 'settings-modal__toggle-item svelte-1jqzo7p'; 
 
-        const textPart = document.createElement('div');
-        textPart.style.cssText = 'display:flex;flex-direction:column;gap:.25rem;pointer-events:none;';
-        
-        // Цвет заголовка: var(--color-text), описание: var(--color-text-secondary)
-        textPart.innerHTML = `
-            <div style="font-size:14px;font-weight:500;color:var(--color-text, #0f1419);line-height:20px;font-family:inherit;">Приватный профиль</div>
-            <div style="font-size:12px;color:var(--color-text-secondary, #9ca3af);line-height:1.4;font-family:inherit;">Скрывает ваш профиль от пользователей (Бета тестирование)</div>
-        `;
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'settings-modal__toggle-content svelte-1jqzo7p';
+
+        const title = document.createElement('div');
+        title.style.cssText = 'color: var(--color-text); font-size: 14px; font-weight: 500;';
+        title.innerText = 'Приватный профиль';
+
+        const description = document.createElement('div');
+        description.style.cssText = 'color: var(--color-text-secondary); font-size: 12px;';
+        description.innerText = 'Скрывает ваш профиль от пользователей (Бета)';
+
+        contentDiv.appendChild(title);
+        contentDiv.appendChild(description);
 
         const btn = document.createElement('button');
         btn.id = 'itd-private-btn';
-        // Фон выключенной кнопки берем из системного цвета инпутов/второстепенного фона
-        btn.style.cssText = `
-            cursor: pointer;
-            border: none;
-            outline: none;
-            width: 48px;
-            height: 28px;
-            border-radius: 14px;
-            padding: 2px;
-            transition: background-color 0.2s ease;
-            flex-shrink: 0;
-            position: relative;
-            background-color: var(--color-item-bg, #eff3f4);
-            margin: 0;
-        `;
+        btn.className = 'settings-modal__toggle svelte-1jqzo7p';
+        btn.setAttribute('type', 'button');
         
         const circle = document.createElement('div');
-        circle.style.cssText = 'width:24px;height:24px;background:#fff;border-radius:50%;transition:transform 0.2s ease;transform:translateX(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);';
-        
+        circle.style.cssText = `
+            width: 24px; height: 24px; background: #fff; border-radius: 50%; 
+            transition: transform 0.2s ease; transform: translateX(0);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        `;
         btn.appendChild(circle);
 
         const updateUI = (state) => {
-            // При включении используем основной акцентный цвет сайта
-            btn.style.backgroundColor = state ? 'var(--color-primary, #1d9bf0)' : 'var(--color-item-bg, #eff3f4)';
-            circle.style.transform = state ? 'translateX(20px)' : 'translateX(0)';
+            if (state) {
+                btn.classList.add('active');
+                btn.style.backgroundColor = 'var(--color-primary)';
+                circle.style.transform = 'translateX(20px)';
+            } else {
+                btn.classList.remove('active');
+                btn.style.backgroundColor = 'var(--color-border)';
+                circle.style.transform = 'translateX(0)';
+            }
         };
 
         btn.onclick = async (e) => {
@@ -107,7 +99,7 @@ window.initPrivacyModule = function() {
             await updatePrivacyAPI(isPrivateStatus);
         };
 
-        row.appendChild(textPart);
+        row.appendChild(contentDiv);
         row.appendChild(btn);
         originalRow.after(row);
 
@@ -119,15 +111,15 @@ window.initPrivacyModule = function() {
                     const data = await res.json();
                     isPrivateStatus = !!data.isPrivate;
                     updateUI(isPrivateStatus);
-                } catch (e) { console.error('ITD Privacy Error:', e); }
+                } catch (e) {}
             }
         })();
     };
 
     const observer = new MutationObserver(() => {
-        const items = document.querySelectorAll('.settings-modal__toggle-item');
-        const hasOriginal = Array.from(items).some(el => el.textContent.includes('Закрыть стену'));
-        if (hasOriginal) injectPrivacySlider();
+        if (document.querySelector('.settings-modal__toggle-item')) {
+            injectPrivacySlider();
+        }
     });
     observer.observe(document.body, { childList: true, subtree: true });
 };
