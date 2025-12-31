@@ -82,7 +82,7 @@
 
             const btn = document.createElement('button');
             btn.id = 'itd-hash-block-btn';
-            btn.className = 'profile-edit-btn svelte-p40znu';
+            btn.className = 'hashtag-block-btn';
             btn.style.marginLeft = '12px';
             btn.innerText = blockedEntry ? 'Показать хештег' : 'Скрыть хештег';
 
@@ -126,6 +126,7 @@
             .itd-i:hover { background: var(--color-border-light, rgba(0,0,0,0.05)); }
             .itd-i.red { color: #ff4d4f; }
             .itd-i svg { flex-shrink: 0; opacity: 0.8; }
+            .hashtag-block-btn { cursor: pointer; border: none; outline: none; font-family: inherit; transition: all .2s ease; background-color: transparent; color: var(--color-text); font-weight: 700; border: 1px solid var(--border-color); border-radius: 9999px; }
         `;
         document.head.appendChild(s);
     };
