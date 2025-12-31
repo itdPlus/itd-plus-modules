@@ -126,7 +126,7 @@
             .itd-i:hover { background: var(--color-border-light, rgba(0,0,0,0.05)); }
             .itd-i.red { color: #ff4d4f; }
             .itd-i svg { flex-shrink: 0; opacity: 0.8; }
-            .hashtag-block-btn { cursor: pointer; border: none; outline: none; font-family: inherit; transition: all .2s ease; background-color: transparent; color: var(--color-text); font-weight: 700; border: 1px solid var(--border-color); border-radius: 9999px; }
+            .hashtag-block-btn { cursor: pointer; border: none; outline: none; font-family: inherit; transition: all .2s ease; background-color: transparent; color: var(--color-text); font-weight: 700; border: 1px solid var(--border-color); border-radius: 9999px; padding: .5rem 1.25rem; font-size: .875rem; }
         `;
         document.head.appendChild(s);
     };
