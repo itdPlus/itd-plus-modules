@@ -1,4 +1,4 @@
-# ITD+ — Extension for itd.com
+# ITD+ — Script for итд.com
 
 ITD+ is a functional extension designed to enhance the user interface and add hidden features to the itd.com platform. This project is created for those who want to get the most out of the site's functionality.
 
