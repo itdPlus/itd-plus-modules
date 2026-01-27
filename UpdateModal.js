@@ -1,4 +1,4 @@
-export default function initUpdateModal() {
+window.initUpdateModal = function() {
     const MODAL_STYLES = `
         .itd-modal-root {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -116,4 +116,4 @@ export default function initUpdateModal() {
 
     if (document.readyState === 'complete') start();
     else window.addEventListener('load', start);
-}
+};
